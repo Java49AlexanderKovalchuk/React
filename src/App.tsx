@@ -41,10 +41,10 @@ function App() {
 
   }
   function getDivsTimers(placesTimes: string[]): JSX.Element[] {
-    return placesTimes.map(timer => <div style={propertiesDivTimer}>
-      <Timer time={time} cityOrCountry={timer} /></div>)
-
+    return placesTimes.map(place => <div style={propertiesDivTimer}>
+      <Timer time={time} cityOrCountry={place} /></div>)
   }
+  
   return <section style={{ display: 'flex', flexDirection: 'column' }}>
     <Input placeHolder={'enter town or country names separated by #'} inputProcess={creatingDivs}></Input>
     <section style={properties}>

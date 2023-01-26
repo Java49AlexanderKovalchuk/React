@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import timeZones from "../time-zones";
 import { Input } from "./Input";
 
@@ -25,6 +25,13 @@ export const Timer: React.FC<TimerProps> = (props) => {
         return res;
     }
 
+    React.useEffect(() => {
+        const timeZoneIndex: number = timeZones.findIndex(tz => JSON.stringify(tz).
+        includes(props.cityOrCountry));
+        timeZoneName.current = timeZone ? props.cityOrCountry : "Israel"
+        setTimeZone(timeZones[timeZoneIndex]?.name)
+    }, [props]);
+
     return <div>
         <Input placeHolder={"Enter city or country"} inputProcess={processSityCountry} />
         <h3 className="logo" style={{ textAlign: "center" }}>Time in {timeZoneName.current}</h3>
@@ -33,3 +40,4 @@ export const Timer: React.FC<TimerProps> = (props) => {
 
     </div>
 }
+
