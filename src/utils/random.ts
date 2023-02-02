@@ -1,44 +1,41 @@
 import React from "react";
 
-function getRandomNumber(min: number, max: number,
-    isMinInclusive: boolean = true, isMaxInclusive: boolean = false): number {
-    if (min > max) {
-        [min, max] = [max, min]
-    }
-    if (min === max || !isMinInclusive || !isMaxInclusive) {
-        throw 'min may not be equaled to max';
-    }
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+
+export function getRandomNumber(min: number, max: number,
+    isMinInclusive: boolean = true, isMaxInclusive: boolean = false) {
+       if (!isMinInclusive) {
+           min++;
+       }
+       if (isMaxInclusive) {
+           max++;
+       }
+       if (min == max) {
+           throw "min may not be equaled to max";
+       }
+       if (min > max) {
+           [min, max] = [max, min];
+       }
+       return min + Math.trunc(Math.random() * (max - min));
+       
 }
-
-function getRandomMatrix(row: number, columns: number, min: number, max: number): number[][] {
-    const res: number[][] = [];
-    for (let i: number = 0; i < row; i++) {
-        res[i] = [];
-    }
-    for (let i: number = 0; i < row; i++) {
-        for (let j: number = 0; j < columns; j++) {
-            res[i][j] = getRandomNumber(min, max, true, true);
-        }
-    }
-    return res;
+export function getElement<T>(array: T[]): T {
+   return array[getRandomNumber(0, array.length)];
 }
-
-//getRandomMatrix(5, 5, 1, 3);
-
-function getRandomArrayElement(array: any[]): any {
-    return array[getRandomNumber(0, array.length - 1, true, true)]
+export function getRandomMatrix(rows: number, columns: number, min: number,
+    max: number): number[][] {
+   const resMatrix: number[][] = [[]];
+   for (let i = 0; i < rows; i++) {
+       resMatrix[i] = [];
+       for (let j = 0; j < columns; j++) {
+           resMatrix[i][j] = getRandomNumber(min, max, true, true);
+       }
+   }
+   return resMatrix;
 }
-
-function getRandomDate(minYear: number, maxYear: number): Date {
-    const year = getRandomNumber(minYear, maxYear, true, true);
-    const month = getRandomNumber(0, 11, true, true);
-    const day = getRandomNumber(1, 31, true, true);
-
-    return new Date(year, month, day);
+export function getRandomDate(minYear: number, maxYear: number): Date {
+   const year = getRandomNumber(minYear, maxYear);
+   const month = getRandomNumber(0, 12);
+   const day = getRandomNumber(1, 32);
+   const dateRes = new Date(year, month, day);
+   return dateRes;
 }
-
-
-
-
-
