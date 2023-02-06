@@ -1,5 +1,11 @@
-import {useSelector} from 'react-redux';
-export const CounterMultiply: React.FC = () => {
+import { useSelector } from 'react-redux';
+type Props = {
+    factor: number
+}
+export const CounterMultiply: React.FC<Props> = ({ factor }) => {
     const count = useSelector<any, number>(state => state.counter.count)
-    return <p>{count} * 10 = {count * 10}</p>
+    return <div>
+            <p>factor={factor}</p>
+            <p>{count} * {factor} = {count * factor}</p>
+    </div>
 }
