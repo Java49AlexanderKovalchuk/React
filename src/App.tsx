@@ -13,10 +13,10 @@ function App() {
   const [factor, setFactor] = React.useState(10);
 
   function includeSubstring(str: string): boolean {
-    return str.includes("admin-");
+    return str.includes("admin");
   }
   return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-    {(!!userName) && <div>
+    {(userName) && <div>
       <p>username: {userName}</p>
       <Input placeHolder={'Enter operand'} inputProcess={function (value: string): string {
         setOperand(+value);
@@ -27,12 +27,12 @@ function App() {
         return '';
       }}></Input>
     </div>}
-    {(!!userName) && <div>
+    {(userName) && <div>
       <CounterUpdater operand={operand}></CounterUpdater>
       <CounterSquare></CounterSquare>
       <CounterMultiply factor={factor}></CounterMultiply>
     </div>}
-    {(!!userName) && <Logout></Logout>}
+    {(userName) && <Logout></Logout>}
     {(!userName) && <Login valid={includeSubstring}></Login>}
   </div>
 
