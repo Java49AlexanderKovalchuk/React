@@ -8,13 +8,13 @@ const authSlice = createSlice({
     name: "auth",
     reducers: {
         login: (state, data) => {
-            if(state.authenticated == '') {
+            if(!state.authenticated) {
                 state.authenticated = data.payload;
             }
         },
         logout: (state) => {
-            if(state.authenticated !== '') {
-                state.authenticated = initialState.authenticated;
+            if(state.authenticated) {
+                state.authenticated = '';
             }
         }
     }
