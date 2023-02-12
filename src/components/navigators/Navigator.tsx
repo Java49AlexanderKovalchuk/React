@@ -1,34 +1,31 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { NavigatorProps } from "../../models/NavigatorProps";
+import { NavigatorProps } from "../../model/NavigatorProps";
 import './navigators.css'
 
-type NavProp = {
-    navConfig: NavigatorProps;
-}
 
-export const Navigator: React.FC<NavProp> = (props) => {
-    function getList(): JSX.Element[] {
-        return props.navConfig.routeItems.map(el => {
-            return <li className="navigator-item">
-                <NavLink style={({ isActive }) => activeLink(isActive)}
-                    to={el.routingPath}>{el.label}</NavLink>
-            </li>
-        })
-    }
-    function activeLink(isActive: boolean): React.CSSProperties | undefined {
-        let res: React.CSSProperties = {};
-        if (isActive) {
-            res = { backgroundColor: "blue", color: "white" };
-        }
-        return res;
-    }
 
+export const Navigator: React.FC<NavigatorProps> = ({ className, routes }) => {
     return <div>
         <nav>
-            <ul className={props.navConfig.cssClassName}>
-                {getList()}
+            <ul className={className}>
+                {getNavItems(routes)}
             </ul>
         </nav>
         <Outlet></Outlet>
     </div>
+
 }
+function getNavItems(routes: { path: string, label: string }[]): React.ReactNode {
+    return routes.map((r, index) => <li className="navigator-item">
+        <NavLink to={r.path} style={({ isActive }) => activeLink(isActive)}>
+            {r.label}</NavLink>
+    </li>)
+}
+function activeLink(isActive: boolean): React.CSSProperties {
+    let res: React.CSSProperties = {};
+    if (isActive) {
+        res = { backgroundColor: "blue", color: "white", fontSize: '1.2em' };
+    }
+    return res;
+}
+
