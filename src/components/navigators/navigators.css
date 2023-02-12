@@ -5,12 +5,23 @@
     justify-content: space-around;
     width: 80vw;
     list-style: none;
+    background-color: beige;
 
 } 
-
+.products-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 80vw;
+    list-style: none;
+    background-color: azure;
+}
 
 @media (min-width: 560px) {
  .navigator-list {
+    flex-direction: row;
+ }
+ .products-list {
     flex-direction: row;
  }   
 }
