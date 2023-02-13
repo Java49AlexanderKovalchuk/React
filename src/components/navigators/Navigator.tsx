@@ -16,7 +16,7 @@ export const Navigator: React.FC<NavigatorProps> = ({ className, routes }) => {
 
 }
 function getNavItems(routes: { path: string, label: string }[]): React.ReactNode {
-    return routes.map((r, index) => <li className="navigator-item">
+    return routes.map((r, index) => <li className="navigator-item" key={index}> 
         <NavLink to={r.path} style={({ isActive }) => activeLink(isActive)}>
             {r.label}</NavLink>
     </li>)
