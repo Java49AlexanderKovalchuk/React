@@ -1,25 +1,30 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { AppBar, Box, Tab, Tabs } from "@mui/material";
+import React from "react";
+import { Link, Outlet } from "react-router-dom";
 import { NavigatorProps } from "../../model/NavigatorProps";
 import './navigators.css'
 
 
 
 export const Navigator: React.FC<NavigatorProps> = ({ className, routes }) => {
-    return <div>
-        <nav>
-            <ul className={className}>
+    const [tabNumber, setTubNumber] = React.useState(0);
+    function changeTubNumber(event: any, newNumber: number) {
+        setTubNumber(newNumber);
+    }
+    return <Box sx={{marginTop: '15vh'}}>
+        <AppBar sx={{backgroundColor: 'lightgrey'}}>
+            <Tabs value={tabNumber} onChange={changeTubNumber}>
                 {getNavItems(routes)}
-            </ul>
-        </nav>
+            </Tabs>
+        </AppBar>
         <Outlet></Outlet>
-    </div>
+    </Box>
+    
 
 }
 function getNavItems(routes: { path: string, label: string }[]): React.ReactNode {
-    return routes.map((r, index) => <li className="navigator-item" key={index}> 
-        <NavLink to={r.path} style={({ isActive }) => activeLink(isActive)}>
-            {r.label}</NavLink>
-    </li>)
+    return routes.map((r, index) => <Tab component={Link} to={r.path}
+        label={r.label} key={index} />)
 }
 function activeLink(isActive: boolean): React.CSSProperties {
     let res: React.CSSProperties = {};

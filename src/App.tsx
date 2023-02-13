@@ -9,7 +9,7 @@ import './App.css'
 import { layoutConfig } from './config/layout-config';
 import { productsConfig } from './config/products-config';
 import { Navigator } from './components/navigators/Navigator';
-
+import { Box, Typography } from '@mui/material';
 
 function App() {
   return <BrowserRouter>
@@ -19,11 +19,7 @@ function App() {
         <Route index element={<Home />}></Route>
         <Route path='customers' element={<Customers />} />
         <Route path='orders' element={<Orders />}></Route>
-        <Route path='products' element={<Navigator className={productsConfig.className}
-          routes={productsConfig.routes} />}>
-          <Route path='dairy' element={<DairyProducts />} />
-          <Route path='bread' element={<BreadProducts />} />
-        </Route>
+        
 
       </Route>
     </Routes>
