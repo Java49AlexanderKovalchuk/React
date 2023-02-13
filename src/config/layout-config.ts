@@ -5,7 +5,7 @@ export const layoutConfig: NavigatorProps = {
     routes: [
         { path: "/", label: 'Home' },
         { path: "/customers", label: 'Customers' },
-        { path: "/orders", label: 'Orders' }
+        { path: "/orders", label: 'Orders' } 
         
     ]
 }
