@@ -1,7 +1,7 @@
 import { AppBar, Box, Tab, Tabs } from "@mui/material";
 import React from "react";
 import { Link, Outlet } from "react-router-dom";
-import { NavigatorProps } from "../../model/NavigatorProps";
+
 import './navigators.css'
 
 

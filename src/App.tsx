@@ -1,10 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { BreadProducts } from './components/pages/BreadProducts';
-import { Customers } from './components/pages/Customers';
-import { DairyProducts } from './components/pages/DairyProducts';
-import { Home } from './components/pages/Home';
-import { Orders } from './components/pages/Orders';
+
+
 import './App.css'
 import { layoutConfig } from './config/layout-config';
 import { productsConfig } from './config/products-config';
