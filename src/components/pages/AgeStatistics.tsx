@@ -5,8 +5,8 @@ import {useSelector} from 'react-redux';
 import { Employee } from '../../model/Employee';
 
 export const AgeStatistics: React.FC = () => {
-    const employees = useSelector<any, Employee[]>
-    (state => state.employees.employees)
+    const employees: Employee[] = useSelector<any, Employee[]>
+    (state => state.company.employees)
     return <Box>
         <Typography>{JSON.stringify(statAge(employees))}</Typography>
     </Box>
