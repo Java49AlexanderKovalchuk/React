@@ -1,9 +1,11 @@
 {
-    "minId": 100, 
-    "maxId": 100000,
-    "departmentsNames": ["QA", "development", "advertising", "sales", "audit"],
+    "minId": 100000000,
+    "maxId": 999999999,
+    "departments": [
+        "Development", "QA", "Audit", "Accounting", "Management"
+    ],
     "minSalary": 5000,
-    "maxSalary": 20000,
-    "minBirthYear": 1953,
-    "maxBirthYear": 2002
+    "maxSalary": 50000,
+    "minBirthYear": 1950,
+    "maxBirthYear": 2003
 }

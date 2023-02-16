@@ -1,25 +1,13 @@
-import { Box, Typography } from "@mui/material"
-import { useSelector } from "react-redux";
-import { Employee } from "../../model/Employee"
-import { statAge } from "../EmloyeesService";
+import React from 'react';
+import {Box, Typography} from "@mui/material";
+import { statAge } from '../../service/EmloyeesService'
+import {useSelector} from 'react-redux';
+import { Employee } from '../../model/Employee';
 
-export const ageStatistics: React.FC = () {
-    
-    const employees: Employee[] = 
-        useSelector<any, Employee[]>(state => state.updateEmpl.list);
-        
-    function getStat(): JSX.Element {
-        if(employees.length === 0) {
-            return <Typography>{"no statistics"}</Typography> 
-        }
-        const stat: Stat = statAge(employees);
-        return <Typography>
-            {"Age statistics: min :" + stat.min + "max :" + stat.max + "min: "
-            + stat.min + "average" + stat.avg}
-        </Typography>
-    }
-
-    return <Box sx={{border: "solid gray 1px"}}>
-        {getStat()}
+export const AgeStatistics: React.FC = () => {
+    const employees = useSelector<any, Employee[]>
+    (state => state.employees.employees)
+    return <Box>
+        <Typography>{JSON.stringify(statAge(employees))}</Typography>
     </Box>
 }
