@@ -1,11 +1,14 @@
 import { Box, Typography } from '@mui/material';
 import { DataGrid, GridColumns } from '@mui/x-data-grid';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { Employee } from '../model/Employee';
 
 type TableProps = {
     tableName: string;
-    tableRows: { min: number, max: number, avg: number }
+    fnStat: (empl: Employee[]) => { min: number, max: number, avg: number };
 }
+
 export const Statistics: React.FC<TableProps> = (props) => {
     const columns = React.useRef<GridColumns>([
         {
@@ -21,12 +24,18 @@ export const Statistics: React.FC<TableProps> = (props) => {
             headerAlign: 'center', align: 'center'
         }
     ])
-    function getRows(): { id: number, min: number, max: number, avg: number }[] {
-        return [{ id: 0, ...props.tableRows }];
+
+    const employees: Employee[] = useSelector<any, Employee[]>
+        (state => state.company.employees);
+
+    function getRows(): {id: number,
+         min: number|string, max: number|string, avg: number|string}[] {
+        return (employees[0]) ? [{ id: 0, ...props.fnStat(employees) }] :
+            [{ id: 0, min: "no emloyees", max: "no employees", avg: "no employees" }];
     }
-    return <Box sx={{ width: '50vw', height: '30vh', textAlign: 'center' }}>
+
+    return <Box sx={{ width: '50vw', height: '80vh', textAlign: 'center' }}>
         <Typography>{props.tableName}</Typography>
         <DataGrid columns={columns.current} rows={getRows()} />
     </Box>
-
 }

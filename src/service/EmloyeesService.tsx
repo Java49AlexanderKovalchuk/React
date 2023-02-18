@@ -15,37 +15,38 @@ export function createRandomEmployee(): Employee {
          birthDate, salary}
     return employee;
 }
-export function statAge(employees: Employee[]):
- {minAge:number, maxAge:number, avgAge: number} {
+
+export function statAge(employees: Employee[]): {min:number, max:number, avg: number} {
     const currentYear = new Date().getFullYear();
     const result = employees.reduce((res, empl) => {
         const age = currentYear - new Date(empl.birthDate).getFullYear();
-        if (res.minAge > age) {
-            res.minAge = age;
-        } else if(res.maxAge < age) {
-            res.maxAge = age
+        if (res.min > age) {
+            res.min = age;
+        } else if(res.max < age) {
+            res.max = age
         }
-        res.avgAge += age;
+        res.avg += age;
         return res;
 
-    }, {minAge: 1000, maxAge: 0, avgAge:0});
-    result.avgAge = Math.trunc(result.avgAge / employees.length) ;
+    }, {min: 1000, max: 0, avg:0});
+    result.avg = Math.round(result.avg / employees.length) ;
     return result;
 }
+
 export function statSalary(employees: Employee[]):
- {minSalary:number, maxSalary:number, avgSalary: number} {
+ {min:number, max:number, avg: number} {
    
     const result = employees.reduce((res, empl) => {
         const {salary} = empl;
-        if (res.minSalary > salary) {
-            res.minSalary = salary;
-        } else if(res.maxSalary < salary) {
-            res.maxSalary = salary;
+        if (res.min > salary) {
+            res.min = salary;
+        } else if(res.max < salary) {
+            res.max = salary;
         }
-        res.avgSalary += salary;
+        res.avg += salary;
         return res;
 
-    }, {minSalary: Number.MAX_VALUE, maxSalary: 0, avgSalary:0});
-    result.avgSalary = Math.trunc(result.avgSalary / employees.length) ;
+    }, {min: Number.MAX_VALUE, max: 0, avg: 0});
+    result.avg = Math.round(result.avg / employees.length) ;
     return result;
 }

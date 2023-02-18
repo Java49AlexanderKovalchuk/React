@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, List, ListItem, Typography } from '@mui/material';
+import { Box} from '@mui/material';
 import { useSelector } from 'react-redux';
 import { Employee } from '../../model/Employee';
 import { DataGrid, GridColumns } from '@mui/x-data-grid';
@@ -28,8 +28,5 @@ export const Employees: React.FC = () => {
         <DataGrid columns={columns.current} rows={employees} />
     </Box>
 }
-function getListItems(employees: Employee[]): React.ReactNode {
-    return employees.map((empl, index) => <ListItem key={index}>
-        <Typography>{JSON.stringify(empl)}</Typography></ListItem>)
-}
+
 
