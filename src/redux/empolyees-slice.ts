@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import { Employee } from '../model/Employee';
-const initialState: {employees: Employee[]} = {
+const initialState:  {employees: Employee[]}= {
     employees: []
 }
 const employeesSlice = createSlice({
