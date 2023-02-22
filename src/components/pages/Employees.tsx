@@ -1,15 +1,15 @@
 import React from 'react';
-import { Box} from '@mui/material';
+import { Box } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { Employee } from '../../model/Employee';
 import { DataGrid, GridActionsCellItem, GridColumns } from '@mui/x-data-grid';
 import './table.css'
-import {Delete} from '@mui/icons-material';
+import { Delete, Edit } from '@mui/icons-material';
 import { employeesActions } from '../../redux/empolyees-slice';
 
 export const Employees: React.FC = () => {
-    
-    const dispatch = useDispatch(); 
+    const auth = useSelector<any, string>(state => state.auth.authenticated);
+    const dispatch = useDispatch();
     const columns = React.useRef<GridColumns>([
         {
             field: 'name', headerClassName: 'header', headerName: 'Employee Name',
@@ -24,15 +24,18 @@ export const Employees: React.FC = () => {
             flex: 1, headerAlign: 'center', align: "center"
         },
         {
-            field: 'salary',  headerClassName: 'header', headerName: 'Salary (NIS)',
+            field: 'salary', headerClassName: 'header', headerName: 'Salary (NIS)',
             flex: 0.8, type: "number", headerAlign: 'center', align: "center"
         },
         {
             field: 'actions', type: 'actions', getActions: (params) => {
-                return[
-                    <GridActionsCellItem label='remove' icon={<Delete />} 
-                    onClick={() => dispatch(employeesActions.removeEmployee(+params.id))}/>    
-                ]
+                return auth.includes('admin') ? [
+                    <GridActionsCellItem label='remove' icon={<Delete />}
+                        onClick={() => dispatch(employeesActions.removeEmployee(+params.id))} />
+                    ,
+                    <GridActionsCellItem label='update' icon={<Edit />}
+                        onClick={() => dispatch(employeesActions.updateEmployee(params))} />
+                ] : []
             }
         }
     ])

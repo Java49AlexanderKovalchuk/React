@@ -9,8 +9,18 @@ export class Company {
     updateEmployee(empl: Employee): void {
         const emplUpdated = this.getEmployee(empl.id);
         if (emplUpdated != null) {
-            emplUpdated.department = empl.department;
-            emplUpdated.salary = empl.salary; 
+            empl.department = emplUpdated.department;
+            empl.name = emplUpdated.name; 
+            empl.birthDate = emplUpdated.birthDate;
+            
+            if(emplUpdated.salary > 20000){
+                empl.salary = Math.round(emplUpdated.salary * 0.9);
+            }
+            if(emplUpdated.salary < 20000) {
+                empl.salary = Math.round(emplUpdated.salary * 1.1);
+            }
+            this.removeEmployee(empl.id);
+            this.addEmployee(empl);
         }
     }
     getEmployee(id: number): Employee | null {
