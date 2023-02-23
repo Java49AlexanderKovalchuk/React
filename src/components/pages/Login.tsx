@@ -1,6 +1,6 @@
 import { authActions } from "../../redux/auth-slice";
-import {useDispatch} from 'react-redux';
-import { Input } from '../Input';
+import {useDispatch} from 'react-redux'
+import { Input } from "../Input";
 import React from "react";
 export const Login: React.FC = ()=>{
     const dispatch = useDispatch();

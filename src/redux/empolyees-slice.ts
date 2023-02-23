@@ -2,8 +2,8 @@ import {createSlice} from '@reduxjs/toolkit';
 import { Employee } from '../model/Employee';
 import { Company } from '../service/Company';
 const company = new Company();
-const initialState:  {employees: Employee[]}= {
-    employees: company.getAllEmployees()    
+const initialState: {employees: Employee[]} = {
+    employees: company.getAllEmployees()
 }
 const employeesSlice = createSlice({
     initialState,
@@ -11,16 +11,14 @@ const employeesSlice = createSlice({
     reducers: {
         addEmployee: (state, data) =>
         {
-           company.addEmployee(data.payload);
-           state.employees = company.getAllEmployees();
+            company.addEmployee(data.payload);
+            state.employees = company.getAllEmployees();
         },
-        removeEmployee: (state, data) => 
-        {
+        removeEmployee: (state, data) => {
             company.removeEmployee(data.payload);
             state.employees = company.getAllEmployees();
         },
-        updateEmployee: (state, data) => 
-        {
+        updateEmployee: (state, data) => {
             company.updateEmployee(data.payload);
             state.employees = company.getAllEmployees();
         }
