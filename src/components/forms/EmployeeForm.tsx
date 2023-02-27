@@ -31,7 +31,7 @@ export const EmployeeForm: React.FC<Props> = ({ submitFn, employeeUpdate }) => {
         setEmployee(emplCopy);
     }
     function handlerSalary(event: any) {
-        const salary: number = +event.target.value;   // add '+' from string to number
+        const salary: number = +event.target.value;   // '+' to trans. string -> number
         const emplCopy = { ...employee };
         emplCopy.salary = salary;
         setEmployee(emplCopy);
@@ -53,22 +53,22 @@ export const EmployeeForm: React.FC<Props> = ({ submitFn, employeeUpdate }) => {
     }
 
     return <Box>
-        <form onSubmit={onSubmitFn} onReset={onResetFn}>
+        <form onSubmit= {onSubmitFn} onReset={onResetFn} >
             <FormControl fullWidth required>
-                <InputLabel id='select-department-id'>Department</InputLabel>
-                <Select labelId="select-department-id" label="Department" 
+                <InputLabel id='select-department-id'> Select Department</InputLabel>
+                <Select labelId="select-department-id" label="Select Department" 
                         value={employee.department} onChange={handlerDepartment}>
                     <MenuItem value=''>None</MenuItem>
                     {departments.map(dep => <MenuItem value={dep}>{dep}</MenuItem>)}
 
                 </Select>
             </FormControl>
-            <TextField type='text' required fullWidth label="Employee name" 
+            <TextField sx={{marginTop: '4vh'}} type='text' required fullWidth label="Employee name" 
             helperText="Enter employee name" onChange={handlerName}
             value={employee.name} inputProps={{
                 readOnly: !!employeeUpdate
             }} />
-            <TextField type="date" required fullWidth label="Birth date"
+            <TextField sx={{marginTop: '4vh'}} type="date" required fullWidth label="Birth date"
             value={employee.birthDate} inputProps={{
                 readOnly: !!employeeUpdate,
                 min: `${minBirthYear}-01-01`,
@@ -76,7 +76,7 @@ export const EmployeeForm: React.FC<Props> = ({ submitFn, employeeUpdate }) => {
             }} InputLabelProps={{
                 shrink: true
             }} onChange={handlerBirthdate}/>
-            <TextField type="number" required fullWidth label="Salary"
+            <TextField sx={{marginTop: '4vh'}} type="number" required fullWidth label="Salary"
             onChange={handlerSalary} 
             helperText={`Enter salary in range [${minSalary}-${maxSalary}]`}
             inputProps={{

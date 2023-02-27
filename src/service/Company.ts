@@ -1,10 +1,16 @@
 import { Employee } from "../model/Employee";
+import employeeConfig from '../config/employee-config.json';
+import { getRandomNumber } from "../utils/random";
 
 export class Company {
     private employees: Employee[] = [];
+    
     addEmployee(empl: Employee): void {
+        const{minId, maxId} = employeeConfig;
+        empl.id = getRandomNumber(minId, maxId);
         this.employees.push(empl);
     }
+
     updateEmployee(empl: Employee): void {
         const index = this.employees.findIndex(e => e.id == empl.id);
         if (index >= 0 ) {
@@ -23,3 +29,11 @@ export class Company {
         return this.employees.slice();
     }
 }
+// function getUniqueId(employees: Employee[]): number {
+//     const {minId, maxId} = employeeConfig;
+//     let id =  getRandomNumber (minId, maxId);
+//     while(!employees.every(n => n.id != id)) {
+//         id = getRandomNumber(minId, maxId);
+//     }
+//     return id;
+// }
