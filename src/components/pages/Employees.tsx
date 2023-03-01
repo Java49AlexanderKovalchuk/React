@@ -7,6 +7,7 @@ import { Delete, Edit, PersonAdd } from '@mui/icons-material';
 import './table.css'
 import { employeesActions } from "../../redux/empolyees-slice";
 import { EmployeeForm } from '../forms/EmployeeForm';
+import Confirmation from '../Confirmation';
 
 export const Employees: React.FC = () => {
     const dispatch = useDispatch();
@@ -35,7 +36,10 @@ export const Employees: React.FC = () => {
                 return authUser.includes('admin') ? [
                     <GridActionsCellItem label="remove" icon={<Delete />}
                         onClick={() =>
-                            dispatch(employeesActions.removeEmployee(+params.id))} />,
+                            //setFlConfirmation(true);
+                            dispatch(employeesActions.removeEmployee(+params.id))
+                        
+                        }/>,
                     <GridActionsCellItem label="update" icon={<Edit />}
                         onClick={() => {
                             editId.current = +params.id;
@@ -49,6 +53,7 @@ export const Employees: React.FC = () => {
     
     const [flEdit, setFlEdit] = useState<Boolean>(false);
     const [flAdd, setFlAdd] = useState<Boolean>(false);
+   // const [flConfirmation, setFlConfirmation] = useState<Boolean>(false);
     const employees = useSelector<any, Employee[]>(state => state.company.employees);
     
     function getComponent(): ReactNode {
@@ -57,6 +62,9 @@ export const Employees: React.FC = () => {
             {authUser.includes('admin') && <IconButton onClick={() => 
                 setFlAdd(true)}><PersonAdd/></IconButton>}        
         </Box> 
+        // if(flConfirmation) {
+        //     res = <Confirmation/>
+        // }
         if (flEdit) {
             res = <EmployeeForm submitFn={function (empl: Employee): boolean {
                 dispatch(employeesActions.updateEmployee(empl));
@@ -77,7 +85,4 @@ export const Employees: React.FC = () => {
         {getComponent()}
 
     </Box>
-}
-function getListItems(employees: Employee[]): React.ReactNode {
-    return employees.map((empl, index) => <ListItem key={index}><Typography>{JSON.stringify(empl)}</Typography></ListItem>)
 }

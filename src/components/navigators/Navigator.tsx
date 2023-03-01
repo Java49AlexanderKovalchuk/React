@@ -17,9 +17,9 @@ export const Navigator: React.FC<NavigatorProps> = ({ routes }) => {
     function changeTabNumber(event: any, newNumber: number) {
         setTabNumber(newNumber);
     }
-    return <Box sx={{ marginTop: "15vh" }}>
-        <AppBar sx={{ backgroundColor: "lightgray" }}>
-            <Tabs value={tabNumber >= routes.length ? 0 : tabNumber } onChange={changeTabNumber} >
+    return <Box sx={{marginTop: "15vh" }}>
+        <AppBar sx={ { backgroundColor: "lightgray" }}>
+            <Tabs  value={tabNumber >= routes.length ? 0 : tabNumber } onChange={changeTabNumber} >
                 {getNavItems(routes)}
             </Tabs>
         </AppBar>
