@@ -88,11 +88,15 @@ export const EmployeeForm: React.FC<Props> = ({ submitFn, employeeUpdate }) => {
                 <Grid item xs={10} sm={5}>
                     <TextField sx={{ marginTop: '4vh' }} type="number" required fullWidth label="Salary"
                         onChange={handlerSalary}
+                        value={employee.salary || ''}
                         helperText={`Enter salary in range [${minSalary}-${maxSalary}]`}
                         inputProps={{
                             min: `${minSalary}`,
                             max: `${maxSalary}`
-                        }} />
+                        }} 
+                        InputLabelProps={{
+                            shrink: !!employeeUpdate || !!employee.salary 
+                        }}/>
                 </Grid>
                 <Grid mt='5vh' container justifyContent='center' >
                     <Paper><Button type="submit">Sumbit</Button></Paper>
