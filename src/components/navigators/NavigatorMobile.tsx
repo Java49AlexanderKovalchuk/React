@@ -1,45 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Menu } from '@mui/icons-material'
+import { AppBar, IconButton, ListItem, Toolbar, Typography, Drawer, List, Box } from '@mui/material';
 import { NavigatorProps } from '../../model/NavigatorProps';
-import { Box, AppBar, Toolbar, Typography, Tab } from '@mui/material';
-import { Link, Outlet } from "react-router-dom";
-import MenuIcon from '@mui/icons-material/Menu';
-import { Drawer } from '@mui/material';
-import { useState } from "react";
-
 export const NavigatorMobile: React.FC<NavigatorProps> = ({ routes }) => {
 
-    function getNavItems(routes: { path: string; label: string }[]): React.ReactNode {
-        return routes.map((r, index) => <Tab component={Link} to={r.path}
-            label={r.label} key={index} onClick={() => {
-                setOpenMenu(false);
-                setTitle(r.label);
-            }} />)
+    const [flOpen, setOpen] = useState<boolean>(false);
+
+    const location = useLocation();
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (routes.length > 0) {
+            navigate(routes[0].path);
+        }
+
+    }, [routes]);
+    function getTitle(): string {
+        const route = routes.find(r => r.path === location.pathname)
+        return route ? route.label : '';
     }
 
-    const [title, setTitle] = useState<string>("Employees' Company");
-    const [openMenu, setOpenMenu] = useState<boolean>(false);
 
-    const handleMenuClick = () => {
-        setOpenMenu(true);
-    };
+    function toggleOpen() {
+        setOpen(!flOpen);
+    }
+    function getListItems(): React.ReactNode {
+        return routes.map(i => <ListItem onClick={toggleOpen} component={Link} to={i.path} key={i.path}>{i.label}</ListItem>)
+    }
+    return <Box sx={{ marginTop: { xs: "15vh", sm: "20vh" } }}>
+        <AppBar position="fixed">
+            <Toolbar><IconButton onClick={toggleOpen} sx={{ color: 'white' }}>
+                <Menu />
+            </IconButton>
+                <Typography sx={{ width: "100%", textAlign: "center", fontSize: "1.5em" }}>
+                    {getTitle()}
+                </Typography>
+                <Drawer open={flOpen} onClose={toggleOpen} anchor="left">
+                    <List>
+                        {getListItems()}
+                    </List>
+                </Drawer></Toolbar>
 
-    return (
-        <Box>
-            <AppBar sx={{}}>
-                <Toolbar>
-                    <MenuIcon onClick={handleMenuClick} sx={{ color: 'white' }} />
-                    <Typography sx={{ width: '100%', textAlign: 'center' }}>
-                        {title}
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-            <Drawer open={openMenu} variant="temporary">
-                {getNavItems(routes)}
-            </Drawer>
-            <Box sx={{ mt: '20vh' }}>
-                <Outlet></Outlet>
-            </Box>
-        </Box>
-    );
+        </AppBar>
+        <Outlet></Outlet>
+    </Box>
 }
-
