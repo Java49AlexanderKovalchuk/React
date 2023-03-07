@@ -17,17 +17,19 @@ export const Login: React.FC = () => {
     const [flAlert, setFlAlert] = useState(false);
     const [open, setOpen] = React.useState(true);
     
+    function handlerLogin(obj: LoginData):boolean {
+        
+        if (auth.login({ username: obj.username, password: obj.password })) {
+            console.log("username", obj.username);
+            dispatch(authActions.login(obj.username));
+        }
+        else {
+            setFlAlert(true);
+        }
+        return true
+    }
     return <Box>
-        <LoginForm signInFn={function (obj: LoginData): boolean {
-            if (auth.login({ username: obj.username, password: obj.password })) {
-                console.log("username", obj.username);
-                dispatch(authActions.login(obj.username));
-            }
-            else {
-                setFlAlert(true);
-            }
-            return true
-        }} ></LoginForm>
+        <LoginForm signInFn={handlerLogin} ></LoginForm>
         {flAlert && 
             <Collapse in={open}>
                 <Alert severity="error"

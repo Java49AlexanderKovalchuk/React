@@ -29,21 +29,25 @@ function Copyright(props: any) {
 const theme = createTheme();
 type Props = {
     signInFn: (obj: LoginData) => boolean;
-} 
+}
 
-export const LoginForm: React.FC<Props> = ({signInFn}) => {
+export const LoginForm: React.FC<Props> = ({ signInFn }) => {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        
+
         // console.log({
         //     username: data.get('email'),
         //     password: data.get('password'),
         // });
-        const obj: any = {username: data.get('email'),
-        password: data.get('password')}
+        const obj: LoginData = {
+            username: data.get('email') as string,
+            password: data.get('password') as string
+        }
         signInFn(obj);
+
+
     };
 
     return (
