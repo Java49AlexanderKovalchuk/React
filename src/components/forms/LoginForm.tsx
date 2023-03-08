@@ -28,7 +28,7 @@ function Copyright(props: any) {
 }
 const theme = createTheme();
 type Props = {
-    signInFn: (obj: LoginData) => boolean;
+    signInFn: (obj: LoginData) => void;
 }
 
 export const LoginForm: React.FC<Props> = ({ signInFn }) => {

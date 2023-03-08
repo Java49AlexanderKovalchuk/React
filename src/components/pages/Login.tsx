@@ -17,16 +17,16 @@ export const Login: React.FC = () => {
     const [flAlert, setFlAlert] = useState(false);
     const [open, setOpen] = React.useState(true);
     
-    function handlerLogin(obj: LoginData):boolean {
-        
-        if (auth.login({ username: obj.username, password: obj.password })) {
-            console.log("username", obj.username);
+    function handlerLogin(obj: LoginData) {
+        try {
+        auth.login({ username: obj.username, password: obj.password })
+              //console.log("username", obj.username);
             dispatch(authActions.login(obj.username));
         }
-        else {
+        catch (err){
             setFlAlert(true);
-        }
-        return true
+            setOpen(true);    
+        }        
     }
     return <Box>
         <LoginForm signInFn={handlerLogin} ></LoginForm>
