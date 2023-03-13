@@ -11,7 +11,7 @@ export class CompanyFirebase {
     async addEmployee(empl: Employee): Promise<void> {
         const{minId, maxId} = employeeConfig;
         empl.id = getRandomNumber(minId, maxId);
-         this.addEmployee(empl);
+         this.updateEmployee(empl);
     }
 
     async updateEmployee(empl: Employee): Promise<void> {

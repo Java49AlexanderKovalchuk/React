@@ -1,9 +1,11 @@
 import { TextField, Box, Button, Alert } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { employeesActions } from "../../redux/empolyees-slice";
+import { employeesActions, employeesReducer } from "../../redux/empolyees-slice";
 import { createRandomEmployee } from "../../service/EmloyeesService";
 import generationConfig from "../../config/generation-config.json"
+import { Employees } from "./Employees";
+import { Employee } from "../../model/Employee";
 
 export const Generation: React.FC = () => {
 
@@ -17,9 +19,10 @@ export const Generation: React.FC = () => {
     }
     function onSubmit(event:any): void {
         event.preventDefault();
-        for(let i:number = 0; i < amount; i++) {
-            dispatch(employeesActions.addEmployee(createRandomEmployee()));
-        } 
+        const employeesAr: Employee[] =
+        // Array.from(amount as any).map(__ => createRandomEmployee());
+        Array.from({length: amount}).map(_ => createRandomEmployee());
+        dispatch(employeesActions.addBulkEmployees(employeesAr));
         setFlAlertSuccess(true);
         setTimeout(() => setFlAlertSuccess(false), alertTimeout);
     }

@@ -1,55 +1,27 @@
-import { authActions } from "../../redux/auth-slice";
-import { useDispatch } from 'react-redux'
-import React, { useState } from "react";
-import { AuthService } from "../../service/AuthService";
+import { authActions } from '../../redux/auth-slice'; 
+import {useDispatch} from 'react-redux'
+import { Input } from "../Input";
+import React from "react";
+import {AuthService} from '../../service/AuthService';
 import { LoginForm } from "../forms/LoginForm";
 import { LoginData } from "../../model/LoginData";
-import { Alert, Box } from "@mui/material";
-import IconButton from '@mui/material/IconButton';
-import Collapse from '@mui/material/Collapse';
-import CloseIcon from '@mui/icons-material/Close';
-
-const ALERT_MESSAGE = 'Wrong username and/or password'
-
-export const Login: React.FC = () => {
+import { Box } from "@mui/material";
+const authService = new AuthService();
+export const Login: React.FC = ()=>{
+   
     const dispatch = useDispatch();
-    const auth = new AuthService();
-    const [flAlert, setFlAlert] = useState(false);
-    const [open, setOpen] = React.useState(true);
-    
-    function handlerLogin(obj: LoginData) {
+    function loginSubmit(loginData: LoginData): string {
+        let message: string = '';
         try {
-        auth.login({ username: obj.username, password: obj.password })
-              //console.log("username", obj.username);
-            dispatch(authActions.login(obj.username));
+            authService.login(loginData);
+            dispatch(authActions.login(loginData.username));
+        }catch(e: any) {
+            message = e
         }
-        catch (err){
-            setFlAlert(true);
-            setOpen(true);    
-        }        
+        return message;
     }
     return <Box>
-        <LoginForm signInFn={handlerLogin} ></LoginForm>
-        {flAlert && 
-            <Collapse in={open}>
-                <Alert severity="error"
-                    action={
-                        <IconButton
-                            aria-label="close"
-                            color="inherit"
-                            size="small"
-                            onClick={() => {
-                                setOpen(false);
-                            }}
-                        >
-                            <CloseIcon fontSize="inherit" />
-                        </IconButton>
-                    }
-                    sx={{ mb: 2 }}
-                >
-                    {ALERT_MESSAGE}
-                </Alert>
-            </Collapse>
-        }
-    </Box>    
+        
+        <LoginForm submitFn={loginSubmit}/>
+        </Box>
 }
