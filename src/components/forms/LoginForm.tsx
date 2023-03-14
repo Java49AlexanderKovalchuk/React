@@ -12,6 +12,10 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { LoginData } from '../../model/LoginData';
 import { Alert } from '@mui/material';
+import { CodeType } from '../../model/CodeType';
+import { AlignHorizontalCenter, Google } from '@mui/icons-material';
+import { text } from 'stream/consumers';
+
 
 function Copyright(props: any) {
   return (
@@ -26,19 +30,24 @@ function Copyright(props: any) {
   );
 }
 type Props = {
-  submitFn: (loginData: LoginData)=>string
+  submitFn: (loginData: LoginData)=>void;
+  code: CodeType;
 };
 const theme = createTheme();
 
-export const LoginForm: React.FC<Props> = ({submitFn}) => {
+export const LoginForm: React.FC<Props> = ({submitFn, code}) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const loginData: LoginData = {username: data.get("username") as string,
   password: data.get("password") as string}
-  setMessage(submitFn(loginData));
+  submitFn(loginData);
   };
-  const [message, setMessage] = React.useState('');
+  const handleButtonGoogle = ():void => {
+    const loginDataGoogle: LoginData = {username: "GOOGLE", password: ''} 
+    submitFn(loginDataGoogle);
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -79,7 +88,7 @@ export const LoginForm: React.FC<Props> = ({submitFn}) => {
               autoComplete="current-password"
             />
           
-            <Button
+            <Button 
               type="submit"
               fullWidth
               variant="contained"
@@ -87,10 +96,16 @@ export const LoginForm: React.FC<Props> = ({submitFn}) => {
             >
               Sign In
             </Button>
+            
+            <Box sx={{textAlign: 'center'}}>
+                <Button onClick={handleButtonGoogle}>sing in with <Google/></Button>
+            </Box>
+            
+            
             <Grid container>
              
               <Grid item>
-              {message && <Alert severity='error' onClose={() => setMessage('')}>{message}</Alert>}
+              {code == 'Credentials Error'  && <Alert severity='error'>{code}, enter another credentials</Alert>}
               </Grid>
             </Grid>
           </Box>
