@@ -28,8 +28,7 @@ export const authActions = {
             dispatch(actions.setAuthenticated(authUser));
             } catch(e){
                 dispatch(codeActions.setCode("Credentials Error"));
-            }
-           
+            }          
            
         } 
     },
