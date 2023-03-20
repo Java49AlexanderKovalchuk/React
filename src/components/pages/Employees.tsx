@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef, useState } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { Alert, Box, Grid, IconButton, List, ListItem, Typography } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { Employee } from '../../model/Employee';
@@ -15,40 +15,7 @@ export const Employees: React.FC = () => {
     const dispatch = useDispatch();
     const authUser = useSelector<any, string>(state => state.auth.authenticated);
     const editId = useRef<number>(0);
-    const columns = React.useRef<GridColumns>([
-        {
-            field: 'name', headerClassName: 'header', headerName: 'Employee Name',
-            flex: 1, headerAlign: 'center', align: 'center'
-        },
-        {
-            field: 'birthDate', headerName: 'Date of Birth', flex: 1, headerClassName: 'header',
-            type: "date", headerAlign: 'center', align: 'center'
-        },
-        {
-            field: 'department', headerName: 'Department', headerClassName: 'header',
-            flex: 1, headerAlign: 'center', align: 'center'
-        },
-        {
-            field: 'salary', headerName: "Salary (NIS)", headerClassName: 'header',
-            flex: 0.7, type: "number", headerAlign: 'center', align: 'center'
-        },
-        {
-            field: 'actions', type: "actions", getActions: (params) => {
-                return authUser.includes('admin') ? [
-                    <GridActionsCellItem label="remove" icon={<Delete />}
-                        onClick={() => removeEmployee(+params.id)
-                        } />,
-                    <GridActionsCellItem label="update" icon={<Edit />}
-                        onClick={() => {
-                            editId.current = +params.id;
-                            setFlEdit(true)
-                        }
-                        } />
-                ] : [];
-            }
-        }
-
-    ])
+    const [columns, setColumns] = useState<GridColumns>([]);
     const [flEdit, setFlEdit] = useState<boolean>(false);
     const [flAdd, setFlAdd] = useState<boolean>(false);
     const [open, setOpen] = useState<boolean>(false);
@@ -57,7 +24,45 @@ export const Employees: React.FC = () => {
     const confirmFn = useRef<(isOk: boolean) => void>((isOK) => { });
     const employees = useSelector<any, Employee[]>(state => state.company.employees);
     const idRemoved = useRef<number>(0);
+    useEffect(() => {setColumns(getColumns())}, [employees]);
+    let code: CodeType = useSelector<any, CodeType>(state => state.errorCode.code);
     const employeeToUpdate = useRef<Employee>();
+    function getColumns(): GridColumns {
+        return ([
+            {
+                field: 'name', headerClassName: 'header', headerName: 'Employee Name',
+                flex: 1, headerAlign: 'center', align: 'center'
+            },
+            {
+                field: 'birthDate', headerName: 'Date of Birth', flex: 1, headerClassName: 'header',
+                type: "date", headerAlign: 'center', align: 'center'
+            },
+            {
+                field: 'department', headerName: 'Department', headerClassName: 'header',
+                flex: 1, headerAlign: 'center', align: 'center'
+            },
+            {
+                field: 'salary', headerName: "Salary (NIS)", headerClassName: 'header',
+                flex: 0.7, type: "number", headerAlign: 'center', align: 'center'
+            },
+            {
+                field: 'actions', type: "actions", getActions: (params) => {
+                    return authUser.includes('admin') ? [
+                        <GridActionsCellItem label="remove" icon={<Delete />}
+                            onClick={() => removeEmployee(+params.id)
+                            } />,
+                        <GridActionsCellItem label="update" icon={<Edit />}
+                            onClick={() => {
+                                editId.current = +params.id;
+                                setFlEdit(true)
+                            }
+                            } />
+                    ] : [];
+                }
+            }
+    
+        ])
+    }
     function removeEmployee(id: number) {
         title.current = "Remove Employee object?";
         const employee = employees.find(empl => empl.id == id);
@@ -80,7 +85,7 @@ export const Employees: React.FC = () => {
     }
     function getComponent(): ReactNode {
         let res: ReactNode = <Box sx={{ height: "70vh", width: "80vw" }}>
-            <DataGrid columns={columns.current} rows={employees} />
+            <DataGrid columns={columns} rows={employees} />
             {authUser.includes("admin") && <IconButton onClick={() => setFlAdd(true)}><PersonAdd /></IconButton>}
         </Box>
         if (flEdit) {
@@ -100,26 +105,23 @@ export const Employees: React.FC = () => {
                 setFlAdd(false);
                 return true;
             }} />
+        } else if (code == "Authorization Error") {
+            res = <Alert severity='error'
+            onClose={() => dispatch(codeActions.setCode('OK'))}>Authorization Error, </Alert>
+        } else if (code == "Unknown Error") {
+            res = <Alert severity='error'
+            onClose={() => dispatch(codeActions.setCode('OK'))}></Alert>
         }
-        return res;
-    }
 
-    let code: CodeType = useSelector<any, CodeType>(state => state.errorCode.code);
-    //let code = 'Unknown Error';   //for checking
-    const [flCloseAlert, setFlCloseAlert] = useState<boolean>(true);
-    function closeAlert(): void {
-        setFlCloseAlert(false);
-        dispatch(codeActions.setCode('OK'));
-    }
+        return res;
+    }    
+    
+    
     return <Box sx={{ height: "80vh", width: "80vw" }}>
         {getComponent()}
         <Confirmation confirmFn={confirmFn.current} open={open}
             title={title.current} content={content.current}></Confirmation>
         
-        <Grid container sx={{mt: "5vh", justifyContent: "center"}}>
-            {flCloseAlert && code != "OK" && <Grid item>
-                {(code == 'Authorization Error'||'Unknown Error') && <Alert onClose={closeAlert} severity='error'>{code}</Alert>}
-            </Grid>}
-        </Grid>
+        
     </Box>
 } 
